@@ -19,6 +19,19 @@ AAuraCharacter::AAuraCharacter() {
 	bUseControllerRotationYaw = false;
 }
 
+void AAuraCharacter::BeginPlay() {
+	Super::BeginPlay();
+
+	if (Controller)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("Controller is valid!"));
+	}
+	else
+	{
+		UE_LOG(LogTemp, Error, TEXT("Controller is null!"));
+	}
+}
+
 void AAuraCharacter::PossessedBy(AController* NewController) {
 	Super::PossessedBy(NewController);
 	
