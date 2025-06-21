@@ -29,10 +29,22 @@ void UOverlayWidgetController::BindCallbacksToDependencies() {
 		AuraAttributeSet->GetMaxManaAttribute()).AddUObject(this, &UOverlayWidgetController::MaxManaChanged);
 
 	Cast<UAuraAbilitySystemComponent>(AbilitySystemComponnet)->EffectAssetTags.AddLambda(
-		[](const FGameplayTagContainer& AssetTags) {
+		//客户端触发不到这个，因为OnGameplayEffectAppliedDelegateToSelf只在服务器触发，后续要想这个怎么做
+	
+		//Lambda中[]用来表示可以访问哪些类的成员，这里填入this才可以访问这个类的成员函数GetDataTableRowByTag
+		[this](const FGameplayTagContainer& AssetTags) {
 			for(const FGameplayTag& Tag : AssetTags) {
-				const FString Msg = FString::Printf(TEXT("GE Tag: %s"), *Tag.ToString());
-				GEngine->AddOnScreenDebugMessage(-1, 8.f, FColor::Blue, Msg);
+
+				// For example, say that Tag = Message.HealthPotion
+
+				//"Message.HealthPotion".MatchesTag("Message") will return True, "Message".MatchesTag("Message.HealthPotion") will return False
+				FGameplayTag MessageTag = FGameplayTag::RequestGameplayTag(FName("Message"));
+				if(Tag.MatchesTag(MessageTag)) {
+					const FUIWidgetRow* Row = GetDataTableRowByTag<FUIWidgetRow>(MessageWidgetDataTable, Tag);
+					if(Row != nullptr) {
+						MessageWidgetRowDelegate.Broadcast(*Row);
+					}
+				}
 			}
 		});
 }
