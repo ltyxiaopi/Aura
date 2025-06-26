@@ -45,25 +45,25 @@ void AAuraEffectActor::ApplyEffectToTarget(AActor* TargetActor, TArray<TSubclass
 
 void AAuraEffectActor::OnOverlap(AActor* TargetActor) {
 	if (InstantEffectApplicationPolicy == EEffectApplicationPolicy::ApplyOnOverlap) {
-		ApplyEffectToTarget(TargetActor, InstantGameplayEffectClasses); // 修改：传入数组
+		ApplyEffectToTarget(TargetActor, InstantGameplayEffectClasses); 
 	}
 	if (DurationEffectApplicationPolicy == EEffectApplicationPolicy::ApplyOnOverlap) {
-		ApplyEffectToTarget(TargetActor, DurationGameplayEffectClasses); // 修改：传入数组
+		ApplyEffectToTarget(TargetActor, DurationGameplayEffectClasses); 
 	}
 	if (InfiniteEffectApplicationPolicy == EEffectApplicationPolicy::ApplyOnOverlap) {
-		ApplyEffectToTarget(TargetActor, InfiniteGameplayEffectClasses); // 修改：传入数组
+		ApplyEffectToTarget(TargetActor, InfiniteGameplayEffectClasses); 
 	}
 }
 
 void AAuraEffectActor::OnEndOverlap(AActor* TargetActor) {
 	if (InstantEffectApplicationPolicy == EEffectApplicationPolicy::ApplyOnEndOverlap) {
-		ApplyEffectToTarget(TargetActor, InstantGameplayEffectClasses); // 修改：传入数组
+		ApplyEffectToTarget(TargetActor, InstantGameplayEffectClasses); 
 	}
 	if (DurationEffectApplicationPolicy == EEffectApplicationPolicy::ApplyOnEndOverlap) {
-		ApplyEffectToTarget(TargetActor, DurationGameplayEffectClasses); // 修改：传入数组
+		ApplyEffectToTarget(TargetActor, DurationGameplayEffectClasses); 
 	}
 	if (InfiniteEffectApplicationPolicy == EEffectApplicationPolicy::ApplyOnEndOverlap) {
-		ApplyEffectToTarget(TargetActor, InfiniteGameplayEffectClasses); // 修改：传入数组
+		ApplyEffectToTarget(TargetActor, InfiniteGameplayEffectClasses); 
 	}
 	if (InfiniteEffectRemovalPolicy == EEffectRemovalPolicy::RemoveOnEndOverlap) {
 		UAbilitySystemComponent* TargetASC = UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(TargetActor);
