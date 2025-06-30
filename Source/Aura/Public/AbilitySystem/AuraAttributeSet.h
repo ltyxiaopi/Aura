@@ -46,6 +46,12 @@ struct FEffectProperties
 	UPROPERTY()
 	ACharacter* TargetCharacter = nullptr;
 };
+
+//typedef TBaseStaticDelegateInstance<FGameplayAttribute(), FDefaultDelegateUserPolicy>::FFuncPtr FAttributeFuncPtr;
+//可以改为模板写法
+template<class T>
+using TStaticFuncPtr = typename TBaseStaticDelegateInstance<T, FDefaultDelegateUserPolicy>::FFuncPtr;
+
 /**
  * 
  */
@@ -63,6 +69,24 @@ public:
 
 	virtual void PostGameplayEffectExecute(const FGameplayEffectModCallbackData& Data) override;
 
+	//前面用了using = typename 定义了属性函数指针的别名
+	TMap<FGameplayTag, TStaticFuncPtr<FGameplayAttribute()>> TagsToAttributes;
+
+	/** FGameplayAttribute(*)()函数指针
+	 *	TBaseStaticDelegateInstance<FGameplayAttribute(), FDefaultDelegateUserPolicy>::FFuncPtr FunctionPointer;
+	 	1. TBaseStaticDelegateInstance<...>
+		这是 Unreal Engine 内部用于实现委托（delegate）的底层模板类。
+		它通常不会在项目代码中直接使用，而是通过宏如 DECLARE_DELEGATE、DECLARE_DELEGATE_RetVal 等间接封装使用。
+		2. <FGameplayAttribute(), FDefaultDelegateUserPolicy>
+		表示这个委托返回 FGameplayAttribute，不带任何参数。
+		FDefaultDelegateUserPolicy 是 UE 的默认策略类型，控制委托的行为（例如线程安全、内存管理等）。
+		3. ::FFuncPtr
+		FFuncPtr 是 TBaseStaticDelegateInstance 中定义的一个类型别名，表示一个函数指针。
+		在这里，它被用来表示一个返回 FGameplayAttribute 且无参的函数指针类型。
+		4. FunctionPointer;
+		声明了一个名为 FunctionPointer 的变量，其类型为上述函数指针。**/
+
+	
 	/*
 	 * Primary Attributes
 	 */
